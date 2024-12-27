@@ -8,9 +8,13 @@
         body {
             margin: 0;
             overflow: hidden;
+            background: #fdf5ea; /* 윈도우 여백 색상 */
         }
         canvas {
             display: block;
+            margin: auto;
+            background: #fff;
+            border: 2px solid #7b4626; /* 게임판 외곽선 색상 */
         }
         #stageSelect {
             position: absolute;
@@ -45,12 +49,13 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #444;
-            color: white;
+            background: #7b4626; /* 버튼 배경색 */
+            color: #fdf5ea; /* 버튼 글씨 색상 */
             border: none;
             padding: 15px 30px;
             font-size: 20px;
             cursor: pointer;
+            border-radius: 20px; /* 좌우 라운드 처리 */
             display: none;
             z-index: 20;
         }
@@ -61,6 +66,9 @@
             color: white;
             font-size: 20px;
             z-index: 20;
+            background: #7b4626; /* 배경색 */
+            border-radius: 10px; /* 라운드 처리 */
+            padding: 10px 20px;
         }
     </style>
 </head>
@@ -83,8 +91,8 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth * 0.8; // 게임판 너비
+        canvas.height = window.innerHeight * 0.8; // 게임판 높이
 
         const stages = [
             { id: 1, enemySpeed: 2, size: 200, playerSize: 10, enemySize: 15, numEnemies: 1 },
@@ -100,7 +108,7 @@
         let gameRunning = false;
         let enemies = [];
         let player = { x: canvas.width / 2, y: canvas.height / 2, size: 10, speed: 5 };
-        
+
         // Updated colors
         const COLORS = { 
             player: '#fde4ac', 
