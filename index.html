@@ -91,8 +91,6 @@
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth * 0.8; // 게임판 너비
-        canvas.height = window.innerHeight * 0.8; // 게임판 높이
 
         const stages = [
             { id: 1, enemySpeed: 2, size: 200, playerSize: 10, enemySize: 15, numEnemies: 1 },
@@ -122,6 +120,18 @@
 
         window.addEventListener('keydown', (e) => (keys[e.key] = true));
         window.addEventListener('keyup', (e) => (keys[e.key] = false));
+
+        window.addEventListener('resize', () => {
+            adjustCanvasSize();
+            if (gameRunning) {
+                loadStage(currentStageIndex);
+            }
+        });
+
+        function adjustCanvasSize() {
+            canvas.width = window.innerWidth * 0.8;
+            canvas.height = window.innerHeight * 0.8;
+        }
 
         function isCollision(x1, y1, x2, y2, size1, size2) {
             return Math.hypot(x1 - x2, y1 - y2) < (size1 + size2) / 2;
@@ -155,6 +165,7 @@
         }
 
         function loadStage(stageIndex) {
+            adjustCanvasSize();
             currentStageIndex = stageIndex;
             const stage = stages[stageIndex];
             enemies = [];
@@ -171,10 +182,6 @@
             captured = new Array(stage.size * stage.size).fill(false); // Initialize all tiles as unoccupied
             player.x = canvas.width / 2;
             player.y = canvas.height / 2;
-
-            const stageSize = stages[stageIndex].size;
-            const stageX = (canvas.width - stageSize) / 2;
-            const stageY = (canvas.height - stageSize) / 2;
 
             gameRunning = true;
             document.getElementById('retryButton').style.display = 'none'; // Hide retry button when starting a new stage
@@ -301,6 +308,9 @@
         document.getElementById('retryButton').addEventListener('click', () => {
             loadStage(currentStageIndex); // Retry the current stage
         });
+
+        // Initial canvas adjustment
+        adjustCanvasSize();
     </script>
 </body>
 </html>
